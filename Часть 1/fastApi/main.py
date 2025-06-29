@@ -51,7 +51,7 @@ def process_image(new_height = 224, new_weight = 224):
             resize_img = img.resize((int(new_height), int(new_weight)))
             # Преобразуем изображение в чёрно - белое
             bw_sesize_img = resize_img.convert("L")
-            bw_sesize_img.save(PROCESSED_FILE)
+            bw_sesize_img.save(PROCESSED_FILE, format = 'PNG')
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка обработки изображения: {str(e)}")
 
