@@ -8,7 +8,7 @@ if [ $# -eq 0 ]; then
 fi
 
 SOURCE_DIR=$1
-BACKUP_DIR="/backup"
+BACKUP_DIR="/d/PythonProjects/Тестовое 2/Часть 3/bash-script/backup"
 DATE=$(date +%Y-%m-%d_%H-%M-%S)
 BACKUP_FILE="$BACKUP_DIR/backup_$(basename "$SOURCE_DIR")_$DATE.tar.gz"
 
@@ -18,13 +18,23 @@ if [ ! -d "$SOURCE_DIR" ]; then
     exit 1
 fi
 
-# Создание папки для бэкапов, если её нет
-if [ ! -d "$BACKUP_DIR" ]; then
-    mkdir -p "$BACKUP_DIR"
-    if [ $? -ne 0 ]; then
-        echo "Ошибка: Не удалось создать директорию для бэкапов '$BACKUP_DIR'."
-        exit 1
-    fi
+# Проверка прав на чтение исходной директории
+if [ ! -r "$SOURCE_DIR" ]; then
+    echo "Ошибка: Нет прав на чтение директории '$SOURCE_DIR'."
+    exit 1
+fi
+
+# Создание директории для бэкапа
+mkdir -p "$BACKUP_DIR"
+if [ $? -ne 0 ]; then
+    echo "Ошибка: Не удалось создать директорию для бэкапов '$BACKUP_DIR'."
+    exit 1
+fi
+
+# Проверка на запись в директорию бэкапа
+if [ ! -w "$BACKUP_DIR" ]; then
+    echo "Ошибка: Нет прав на запись в директорию '$BACKUP_DIR'."
+    exit 1
 fi
 
 # Создание архива
